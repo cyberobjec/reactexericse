@@ -68,6 +68,27 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(todos))
   }, [todos])
 
+  useEffect(() => {
+    // 1. 定义处理函数
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        console.log('检测到 Esc，清空输入框')
+        setInputValue('')
+      }
+    }
+
+    // 2. 绑定到 window 上
+    window.addEventListener('keydown', handleKeyDown)
+
+    // 🔴 这里缺了一步非常关键的操作！
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      console.log('移除事件监听')
+      console.log('清空输入框')
+      setInputValue('')
+    }
+  }, [])
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>代办清单 📝</h1>
